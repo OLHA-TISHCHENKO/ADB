@@ -1,0 +1,120 @@
+Задание 1. Отобразить подключенный девайс в консоли.
+ Чтобы увидеть список подключенных устройств к компьютеру используется команда devices:
+
+	adb devices
+
+ (работает в Bash, работает в cmd)
+ 
+
+Задание 2. Установить .apk файл приложения todolist на телефон с компьютера через  ADB
+Шаг 1.  В командной строке перейти в папку с файлом apk
+Шаг 2.  Команда установки install
+
+ adb install Todolist.apk 
+
+ (работает в Bush, работает в cmd )
+ 
+
+Задание 3. Вывести адрес приложения todolist в системе Android
+Выводим все приложения
+
+ adb shell 'pm list packages -f'
+
+(работает в Bash, не работает в cmd)
+
+Выводим todolist
+
+ adb shell 'pm list packages -f' |grep todolist
+
+   (работает в Bash, не работает в cmd)
+ 
+
+Задание 4. Сделать скриншот запущенного приложения todolist и сразу скопировать на компьютер в одной команде.
+Шаг 1. Открываем на телефоне экран, который нужно заскринить.
+Шаг 2. Выполняем команду (скрин будет и в телефоне, и на компе), (скрин нужно делать в формате png другие форматы не поддерживаются).
+
+adb shell screencap -p sdcard/scr5.png && adb pull sdcard/scr5.png D:/QA/mobile/ADB
+
+(работает в Bash, работает в cmd)
+	
+При необходимости команду screencap можно выполнить отдельно(при этом скрин остается на телефоне) 
+
+adb shell screencap -p sdcard/scr3.png
+
+(работает в Bash, работает в cmd)
+
+Так же есть команда для видеозаписи экрана (допустимый формат mp.4, максимальная длинна видео – 3 мин(180сек)) (работает в Bash, работает в cmd):
+
+adb shell screenrecord  sdcard/demo.mp4
+
+если нужно остановить раньше, чем 3 мин, нажимаем  Ctrl+C
+
+запулить видео на компьютер:
+
+adb pull sdcard/demo.mp4 D:/QA/mobile/ADB
+
+можно так же установить лимит времени съемки (напр. 15 сек):
+
+adb shell screenrecord  sdcard/demo.mp4  –time-limit 15    (перед time два дефиса)
+
+
+Задание 5. Вывести в консоль логи приложения todolist 
+
+	adb logcat -v time |findstr "todolist"
+
+(работает в Bash, работает в cmd)
+	
+	 adb logcat | grep -nw "todolist"
+	
+(работает в Bash, не работает в cmd)
+
+
+Задание 6. Скопировать логи приложения todolist на компьютер.
+
+Копируем логи из буфера обмена:
+
+adb logcat -d -v time |findstr "todolist" > D:/QA/mobile/ADB/log_todolist1.txt
+
+(работает в Bash, работает в cmd)
+
+  	adb logcat -d -v time |grep -nw "todolist" > D:/QA/mobile/ADB/log_todolist.txt
+	
+(работает в Bash, не работает в cmd)
+
+Записываем текущие логи в файл (остановить запись Ctrl+C )
+
+adb logcat | grep -nw "simpler" > D:/QA/mobile/ADB/log_todolist.log
+
+(работает в Bash, не работает в cmd)
+
+ 
+Задание7. Удалить приложение todolist с телефона через ADB
+
+  	adb uninstall com.android.todolist
+ 
+(работает в Bash, работает в cmd)
+
+
+
+
+ТАК ЖЕ СЛУЖБА ПОЗВОЛЯЕТ:
+получить список различных параметров устройства и состояний этих параметров
+adb shell getprop        
+получить информацию по определенному параметру (напр. wifi.interface) 
+adb shell getprop wifi.interface      (работает в cmd)
+adb shell getprop ro.serialno           (работает в cmd)
+adb -d shell getprop ro.serialno                   (идентификатор устройства)  (работает в cmd)
+adb -d shell getprop ro.product.model      (модель устройства)  (работает в cmd)
+adb -d shell getprop ro.build.display.id      (номер билда установленного на телефоне) (работает в cmd)
+adb -d shell getprop ro.build.version.release    (версия андроида) (работает cmd)
+
+adb shell dumpsys battery    (состояние батареи)
+при работе с эмулятором (можно изменить уровень заряда батареи):
+adb shell dumpsys battery unplug            (состояние – батарея не подключена к зарядке)
+adb shell dumpsys battery set level 5      (установка заряда батареи – 5%)
+adb shell dumpsys battery reset               (возвращаем батарею в первоначальное состояние)
+
+
+
+
+
